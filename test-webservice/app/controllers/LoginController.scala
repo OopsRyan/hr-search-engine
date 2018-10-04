@@ -9,7 +9,9 @@ class LoginController @Inject() (cc: ControllerComponents) extends AbstractContr
 
   def index() = Action { implicit request: Request[AnyContent] =>
     request.session.get("User") match {
-      case Some(user) if isValidUser(user) => Ok(s"Welcome $user")
+      case Some(user) if isValidUser(user) =>
+        val view = views.html.login(user.toString)
+        Ok(view)
       case Some(user) => BadRequest("Not a valid user")
       case None => BadRequest("You are currently not logged in. \n Please login by calling: \n" +
         "http://localhost:9000/auth/login?name=admin&password=1234")
