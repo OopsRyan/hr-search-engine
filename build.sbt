@@ -1,4 +1,5 @@
-import sbt.Keys._
+import sbt.Keys.{name, _}
+import sbt.enablePlugins
 
 
 name := "temp-structure"
@@ -26,10 +27,11 @@ def BaseProject(name: String): Project = {
   Project(name, file(name)).settings(commonSettings: _*)
 }
 
-def PlayProject(name: String): Project = {
+def PlayProject(name: String): Project = (
   BaseProject(name)
-//  enablePlugins PlayScala
-}
+  enablePlugins PlayScala
+  )
+
 
 lazy val commons = BaseProject("commons")
   .settings(libraryDependencies ++= Seq(specs2 % Test, playJson))
@@ -80,3 +82,8 @@ runAll := {
   (run in Compile in `rank-app`).partialInput(" 5003").evaluated
 }
 
+fork in run := true
+
+concurrentRestrictions in Global := Seq(
+  Tags.customLimit(_ => true)
+)
