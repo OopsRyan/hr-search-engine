@@ -27,10 +27,7 @@ def BaseProject(name: String): Project = {
   Project(name, file(name)).settings(commonSettings: _*)
 }
 
-def PlayProject(name: String): Project = (
-  BaseProject(name)
-  enablePlugins PlayScala
-  )
+def PlayProject(name: String): Project = BaseProject(name).enablePlugins(PlayScala)
 
 
 lazy val commons = BaseProject("commons")
